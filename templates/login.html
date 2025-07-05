@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Wine Price Project</title>
+    <style>
+        body {
+            background: #000; /* Solid black background */
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-container {
+            background: #18181a;
+            padding: 2.5rem 2rem 2rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(44, 62, 80, 0.25);
+            width: 100%;
+            max-width: 350px;
+            text-align: center;
+        }
+        .login-container h1 {
+            margin-bottom: 1.5rem;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #444;
+            background: #222;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.2s, background 0.2s;
+        }
+        .login-container input[type="text"]:focus,
+        .login-container input[type="password"]:focus {
+            border-color: #8e2de2;
+            background: #19191b;
+            outline: none;
+        }
+        .login-container button {
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(90deg, #8e2de2 0%, #4a00e0 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .login-container button:hover {
+            background: linear-gradient(90deg, #4a00e0 0%, #8e2de2 100%);
+        }
+        .login-container .error-message {
+            color: #e74c3c;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        .login-container p {
+            margin-top: 1.5rem;
+            color: #aaa;
+        }
+        .login-container a {
+            color: #8e2de2;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .login-container a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 400px) {
+            .login-container {
+                padding: 1.5rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Login</h1>
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name="num1" placeholder="Enter username" required>
+            <input type="password" name="num2" placeholder="Enter password" required>
+            <button type="submit">Login</button>
+        </form>
+        {% if result %}
+            <div class="error-message">ERROR: {{ result }}</div>
+        {% endif %}
+        <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
+    </div>
+</body>
+</html>
