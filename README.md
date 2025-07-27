@@ -154,10 +154,6 @@ _Regression model interface with input fields and predicted price output._
 
 ---
 
-### 🚗 Vehicle Speed Detection (DL Module)
-Video Plays in your command prompt
----
-
 ### 🐶 Cat vs Dog Classifier (DL Module)
 _CNN-based prediction with confidence scores and image preview._
 <img width="1901" height="901" alt="Screenshot 2025-07-24 080123" src="https://github.com/user-attachments/assets/d7263a1d-f907-4710-949c-0ee62cf660f6" />
