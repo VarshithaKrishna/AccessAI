@@ -5,3 +5,5 @@ THIS SHOULD HAVE TWO FILES IN DL FOLDER  .....cats_dogs_classifier.h5 and HarrCa
 THIS SHOULD HAVE TWO FILES IN ML FOLDER  .....wine_model_bundle.pkl.............................................Couldn't upload them as the size is too big.
 
 Project won't work without these...just frontend will be visible
+
+Add images folder in static directory and paste your custom images there and modify html accordingly.
