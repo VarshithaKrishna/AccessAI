@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>🚗 Speed Detection | Wine Vision</title>
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
+  <style>
+    body::before {
+      background-image: url("{% static 'images/vehicle.jpg' %}");
+      opacity: 0.7;
+    }
+    .upload-box {
+      background-color: rgba(17, 17, 17, 0.9);
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(167, 24, 124, 0.4);
+      max-width: 600px;
+      margin-top: 80px;
+      text-align: center;
+    }
+    .upload-box h1 {
+      font-size: 2.5rem;
+      color: #a7187c;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px #111;
+    }
+    .upload-box input[type="file"] {
+      background-color: #852257;
+    }
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: #8b0000;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1em;
+      background-color: #fdfaf6;
+      padding: 8px 12px;
+      border: 2px solid #8b0000;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .back-button:hover {
+      background-color: #fbeee0;
+    }
+  </style>
+</head>
+<body>
+  <a href="{% url 'dl' %}" class="back-button">← Back to Home</a>
+  <div class="upload-box">
+    <h1>🚗 Upload Video for Speed Detection</h1>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Upload Video</button>
+</form>
+</div>
+</body>
+</html>

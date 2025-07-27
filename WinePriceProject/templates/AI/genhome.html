@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Text / PDF / Image Reader</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #2c0f15;
+            color: #ffe4ed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #e5a4b3;
+            margin-bottom: 30px;
+        }
+
+        .form-box {
+            background-color: #3f1921;
+            padding: 25px;
+            border-radius: 10px;
+            width: 420px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #f6cbd2;
+        }
+
+        textarea, input[type="file"], input[type="text"] {
+            width: 100%;
+            margin-top: 8px;
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            background-color: #a52845;
+            color: #fff;
+        }
+
+        input::placeholder {
+            color: #fbd4e1;
+        }
+
+        button {
+            background-color: #a52845;
+            color: #fff;
+            padding: 10px 18px;
+            margin-top: 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #micBtn {
+            margin-top: 10px;
+            background-color: #90243b;
+        }
+
+        #micBtn.listening {
+            background-color: #ff5277;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0px #ff5277; }
+            50% { box-shadow: 0 0 10px #ff5277; }
+            100% { box-shadow: 0 0 0px #ff5277; }
+        }
+    </style>
+
+    <script>
+        function toggleInput(choice) {
+            document.getElementById('input_type').value = choice;
+            document.getElementById('text-section').classList.add('hidden');
+            document.getElementById('pdf-section').classList.add('hidden');
+            document.getElementById('image-section').classList.add('hidden');
+
+            if (choice === 'text') {
+                document.getElementById('text-section').classList.remove('hidden');
+            } else if (choice === 'pdf') {
+                document.getElementById('pdf-section').classList.remove('hidden');
+            } else if (choice === 'image') {
+                document.getElementById('image-section').classList.remove('hidden');
+            }
+        }
+
+        let recognition;
+        let isListening = false;
+
+        function toggleVoiceInput() {
+            const micBtn = document.getElementById('micBtn');
+            if (isListening) {
+                recognition.stop();
+                micBtn.classList.remove('listening');
+                micBtn.textContent = '🎤 Start Listening';
+                isListening = false;
+            } else {
+                recognition = new(window.SpeechRecognition || window.webkitSpeechRecognition)();
+                recognition.lang = 'en-US';
+                recognition.interimResults = false;
+
+                recognition.onstart = () => {
+                    micBtn.classList.add('listening');
+                    micBtn.textContent = '🛑 Stop Listening';
+                    isListening = true;
+                };
+
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    document.getElementById('voice_text').value = transcript;
+                };
+
+                recognition.onerror = (e) => {
+                    alert('Speech recognition error: ' + e.error);
+                    micBtn.classList.remove('listening');
+                    micBtn.textContent = '🎤 Start Listening';
+                    isListening = false;
+                };
+
+                recognition.onend = () => {
+                    micBtn.classList.remove('listening');
+                    micBtn.textContent = '🎤 Start Listening';
+                    isListening = false;
+                };
+
+                recognition.start();
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1> Text to Speech with Text Extraction 🍷</h1>
+
+    <div class="form-box">
+        <form method="POST" action="{% url 'result' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="input_type" id="input_type">
+
+            <div>
+                <button type="button" onclick="toggleInput('text')">Text</button>
+                <button type="button" onclick="toggleInput('pdf')">PDF</button>
+                <button type="button" onclick="toggleInput('image')">Image</button>
+            </div>
+
+            <div id="text-section" class="hidden">
+                <label for="input_text">Paste Text</label>
+                <textarea name="input_text" rows="5" placeholder="Type your message here..."></textarea>
+            </div>
+
+            <div id="pdf-section" class="hidden">
+                <label for="pdf_file">Upload PDF</label>
+                <input type="file" name="pdf_file" accept="application/pdf">
+            </div>
+
+            <div id="image-section" class="hidden">
+                <label for="image_file">Upload Image</label>
+                <input type="file" name="image_file" accept="image/*">
+            </div>
+
+            <!-- 🆕 Voice input -->
+            <label for="voice_text">Or Speak Your Input 🎙️</label>
+            <input type="text" name="voice_text" id="voice_text" placeholder="Your spoken message will appear here..." readonly>
+            <button type="button" id="micBtn" onclick="toggleVoiceInput()">🎤 Start Listening</button>
+
+            <button type="submit">Extract Text</button>
+        </form>
+    </div>
+</body>
+</html>

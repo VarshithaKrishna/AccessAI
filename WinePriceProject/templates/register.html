@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register</title>
+  <style>
+    body {
+      background: #000;
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .register-container {
+      background: #18181a;
+      padding: 2.5rem 2rem 2rem 2rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(134, 18, 90, 0.4);
+      width: 100%;
+      max-width: 350px;
+      text-align: center;
+    }
+    .register-container h1 {
+      margin-bottom: 1.5rem;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+    .register-container input[type="text"],
+    .register-container input[type="password"] {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      margin-bottom: 1rem;
+      border: 1px solid #444;
+      background: #222;
+      color: #fff;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    .register-container input:focus {
+      border-color: #86125a;
+      background: #19191b;
+      outline: none;
+    }
+    .register-container button {
+      width: 100%;
+      padding: 0.8rem;
+      background: #86125a;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .register-container button:hover {
+      background: #a31f70;
+    }
+    .register-container .error-message {
+      color: #e74c3c;
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+    .register-container p {
+      margin-top: 1.5rem;
+      color: #aaa;
+    }
+    .register-container a {
+      color: #ff75a0;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .register-container a:hover {
+      text-decoration: underline;
+    }
+    .register-container {
+  background: #18181a;
+  padding: 3rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(134, 18, 90, 0.4);
+  width: 100%;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  text-align: center;
+  }
+    @media (max-width: 400px) {
+      .register-container {
+        padding: 1.5rem 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <h1>Register</h1>
+    <form method="post">
+      {% csrf_token %}
+      <input type="text" name="num1" placeholder="Enter username" required />
+      <input type="password" name="num2" placeholder="Enter password" required />
+      <input type="password" name="num3" placeholder="Re-enter password" required />
+      <button type="submit">Register</button>
+    </form>
+    {% if result %}
+      <div class="error-message">ERROR: {{ result }}</div>
+    {% endif %}
+    <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+gunicorn
+joblib==1.5.1
+numpy==2.2.6
+scikit-learn==1.7.0
+scipy==1.15.3
+threadpoolctl==3.6.0
+django
+pandas
+pillow==11.3.0
+opencv-python==4.11.0.86
+dlib==19.24.1
+pytesseract==0.3.13
+requests==2.32.4
+nltk==3.9.1

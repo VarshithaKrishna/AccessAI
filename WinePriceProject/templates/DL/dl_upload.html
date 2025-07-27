@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Upload | Cat vs Dog Classifier</title>
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
+  <style>
+    body::before {
+      background-image: url("{% static 'images/ai.png' %}");
+      opacity: 0.35;
+    }
+    .upload-box {
+      margin-top: 70px;
+      background-color: rgba(17, 17, 17, 0.9);
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(167, 24, 124, 0.4);
+      max-width: 600px;
+      text-align: center;
+    }
+    label {
+      font-size: 1.1rem;
+      color: #ccc;
+      margin-bottom: 8px;
+    }
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: #8b0000;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1em;
+      background-color: #fdfaf6;
+      padding: 8px 12px;
+      border: 2px solid #8b0000;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .back-button:hover {
+      background-color: #fbeee0;
+    }
+  </style>
+</head>
+<body>
+  <a href="{% url 'dl' %}" class="back-button">← Back to Home</a>
+  <div class="upload-box">
+    <h1>🐶 Upload Image</h1>
+    <h2>Classify Cat or Dog 🐱</h2>
+
+    <form method="post" action="{% url 'dl_upload' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      <label for="image">Choose image to classify:</label>
+      <input type="file" name="image" id="image" accept="image/*" required>
+      <input type="submit" value="Classify">
+    </form>
+  </div>
+</body>
+</html>

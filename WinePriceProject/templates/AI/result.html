@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Extracted Text Reader</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: radial-gradient(circle at center, #2c0f15 0%, #1b080d 100%);
+            color: #ffe4ed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        h2 {
+            color: #e5a4b3;
+            font-size: 2.2rem;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .result-box {
+            background: rgba(63, 25, 33, 0.96);
+            padding: 24px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 750px;
+            white-space: pre-wrap;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+            transition: box-shadow 0.3s;
+        }
+
+        .result-box:hover {
+            box-shadow: 0 0 20px #a52845;
+        }
+
+        .voice-select,
+        .control-panel {
+            margin-top: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        select, button {
+            background-color: #a52845;
+            color: #fff;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover, select:hover {
+            background-color: #90243b;
+        }
+
+        button:active {
+            transform: scale(0.97);
+        }
+    </style>
+</head>
+<body>
+    <h2>Extracted Text ✨</h2>
+
+    <div class="result-box" id="textContent">
+        {{ extracted_text }}
+    </div>
+
+    <div class="voice-select">
+        <label for="voiceChoice">Choose Voice:</label>
+        <select id="voiceChoice"></select>
+    </div>
+
+    <div class="control-panel">
+        <button onclick="startReading()">🔊 Read All</button>
+        <button onclick="pauseReading()">⏸️ Pause</button>
+        <button onclick="resumeReading()">▶️ Resume</button>
+        <button onclick="stopReading()">⏹️ Stop</button>
+    </div>
+
+    <script>
+        let synth = window.speechSynthesis;
+        let voices = [];
+        let utterance;
+        let lastHoveredText = '';
+
+        function loadVoices() {
+            voices = synth.getVoices();
+            const voiceSelect = document.getElementById('voiceChoice');
+            voiceSelect.innerHTML = '';
+
+            voices.forEach((voice, i) => {
+                const option = document.createElement('option');
+                option.textContent = `${voice.name} (${voice.lang})`;
+                option.value = i;
+                voiceSelect.appendChild(option);
+            });
+        }
+
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = loadVoices;
+        }
+        loadVoices();
+
+        function getSelectedVoice() {
+            const selectedIndex = document.getElementById('voiceChoice').value;
+            return voices[selectedIndex] || null;
+        }
+
+        function speakText(text) {
+            if (synth.speaking) synth.cancel();
+            utterance = new SpeechSynthesisUtterance(text);
+            utterance.voice = getSelectedVoice();
+            synth.speak(utterance);
+        }
+
+        function startReading() {
+            const fullText = document.getElementById('textContent').innerText;
+            speakText(fullText);
+        }
+
+        function pauseReading() {
+            if (synth.speaking && !synth.paused) synth.pause();
+        }
+
+        function resumeReading() {
+            if (synth.paused) synth.resume();
+        }
+
+        function stopReading() {
+            synth.cancel();
+        }
+
+        document.getElementById('textContent').addEventListener('mousemove', e => {
+            const text = e.target.innerText || e.target.textContent;
+            const cleaned = text.trim();
+            if (cleaned && cleaned !== lastHoveredText) {
+                lastHoveredText = cleaned;
+                speakText(cleaned);
+            }
+        });
+    </script>
+</body>
+</html>

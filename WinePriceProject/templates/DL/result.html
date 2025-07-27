@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>🚦 Speed Detection Results</title>
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
+  <style>
+    body::before {
+      background-image: url("{% static 'images/wine_bg.jpg' %}");
+      opacity: 0.2;
+    }
+    .results-container {
+      margin-top: 60px;
+      padding: 30px;
+      background-color: rgba(17, 17, 17, 0.9);
+      border-radius: 12px;
+      max-width: 700px;
+      box-shadow: 0 0 15px rgba(167, 24, 124, 0.4);
+    }
+    h1 {
+      color: #a7187c;
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      text-shadow: 2px 2px #111;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      padding: 10px 15px;
+      background-color: #780c4d;
+      border-radius: 8px;
+      border-left: 4px solid #a7187c;
+    }
+    .overspeed {
+      color: #ff3b3b;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="results-container">
+    <h1>🚦 Detection Results</h1>
+    <h2>Overspeeding Cars</h2>
+<ul>
+{% for car in results %}
+    <li>Car ID: {{ car.car_id }}, Speed: {{ car.speed }} km/h
+        <img src="{{ car.image|cut:MEDIA_ROOT }}" width="200"/>
+    </li>
+{% empty %}
+    <li>No overspeeding cars detected.</li>
+{% endfor %}
+</ul>
+  </div>
+</body>
+</html>
